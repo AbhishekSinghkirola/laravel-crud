@@ -114,6 +114,38 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $post = Post::FindOrFail($id);
+        $post->delete();
+
+        return redirect()->route('posts.index');
+    }
+
+    /**
+     * Display a listing of Trashed records
+     */
+
+    public function trashed()
+    {
+        $posts = Post::onlyTrashed()->get();
+        return view('trashed', compact('posts'));
+    }
+
+    public function restore(string $id)
+    {
+        $post = Post::onlyTrashed()->FindOrFail($id);
+        $post->restore();
+
+        return redirect()->back();
+    }
+
+    public function forceDelete(string $id)
+    {
+        $post = Post::onlyTrashed()->FindOrFail($id);
+
+        File::delete(public_path($post->image));
+
+        $post->forceDelete();
+
+        return redirect()->back();
     }
 }
