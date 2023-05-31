@@ -7,7 +7,7 @@
                 <h4> All Posts</h4>
                 <div>
                     <a href="{{ route('posts.create') }}" class="btn btn-success">Create</a>
-                    <a href="#" class="btn btn-warning">Trashed</a>
+                    <a href="{{ route('posts.trashed') }}" class="btn btn-warning">Trashed</a>
                 </div>
             </div>
             <div class="card-body">
@@ -37,7 +37,12 @@
                                 <td>
                                     <a href="{{ route('posts.show', $post->id) }}" class="btn btn-sm btn-success">Show</a>
                                     <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                    <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST"
+                                        class="d-inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
